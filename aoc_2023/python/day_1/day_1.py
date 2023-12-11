@@ -33,7 +33,7 @@ def main():
     if len(sys.argv) == 2:
         input_file = str(sys.argv[1])
     else:
-        input_file = '../../input/day_1.txt'
+        input_file = '../../input/day_1/day_1.txt'
 
     with open(f'{input_file}', 'r') as f:
         input = f.readlines()
