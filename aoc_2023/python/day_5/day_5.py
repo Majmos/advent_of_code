@@ -5,31 +5,57 @@ def find_map(input: str):
     return map_source_to_destination(input.split(':\n')[1].strip().split('\n'))
 
 def map_source_to_destination(list_to_map: list[str]):
-    mapped_list = {}
+    mapped_list = []
     for line in list_to_map:
         (destination, source, length) = line.split()
-        for i in range(int(length)):
-            key = str(int(source) + i)
-            value = str(int(destination) + i)
-            mapped_list.setdefault(key, value)
+        mapped_list.append((int(destination), int(source), int(length)))
 
     return mapped_list
 
-def find_seed_location(seed: str, 
-                       seed_to_soil_map: dict[str, str],
-                       soil_to_fertilizer_map: dict[str, str],
-                       fertilizer_to_water_map: dict[str, str],
-                       water_to_light_map: dict[str, str],
-                       light_to_temperature_map: dict[str, str],
-                       temperature_to_humidity_map: dict[str, str],
-                       humidity_to_location_map: dict[str, str]):
-    soil = seed_to_soil_map.setdefault(seed, seed)
-    fertilizer = soil_to_fertilizer_map.setdefault(soil, soil)
-    water = fertilizer_to_water_map.setdefault(fertilizer, fertilizer)
-    light = water_to_light_map.setdefault(water, water)
-    temperature = light_to_temperature_map.setdefault(light, light)
-    humidity = temperature_to_humidity_map.setdefault(temperature, temperature)
-    return humidity_to_location_map.setdefault(humidity, humidity)
+def find_seed_location(seed: int, 
+                       seed_to_soil_map: list[tuple[str, str, str]],
+                       soil_to_fertilizer_map: list[tuple[str, str, str]],
+                       fertilizer_to_water_map: list[tuple[str, str, str]],
+                       water_to_light_map: list[tuple[str, str, str]],
+                       light_to_temperature_map: list[tuple[str, str, str]],
+                       temperature_to_humidity_map: list[tuple[str, str, str]],
+                       humidity_to_location_map: list[tuple[str, str, str]]):
+    soil = seed
+    for destination, source, length in seed_to_soil_map:
+        if seed in range(source, source + length):
+            soil = destination - source + seed
+    
+    fertilizer = soil
+    for destination, source, length in soil_to_fertilizer_map:
+        if soil in range(source, source + length):
+            fertilizer = destination - source + soil
+
+    water = fertilizer
+    for destination, source, length in fertilizer_to_water_map:
+        if fertilizer in range(source, source + length):
+            water = destination - source + fertilizer
+
+    light = water
+    for destination, source, length in water_to_light_map:
+        if water in range(source, source + length):
+            light = destination - source + water
+
+    temperature = light
+    for destination, source, length in light_to_temperature_map:
+        if light in range(source, source + length):
+            temperature = destination - source + light
+
+    humidity = temperature
+    for destination, source, length in temperature_to_humidity_map:
+        if temperature in range(source, source + length):
+            humidity = destination - source + temperature    
+
+    location = humidity
+    for destination, source, length in humidity_to_location_map:
+        if humidity in range(source, source + length):
+            location = destination - source + humidity
+
+    return location
     
 
 def part_1(input: str):
@@ -53,7 +79,7 @@ def part_1(input: str):
 
     answer = sys.maxsize
     for seed in seeds:
-        temp = find_seed_location(seed,
+        temp = find_seed_location(int(seed),
                            seed_to_soil_map,
                            soil_to_fertilizer_map,
                            fertilizer_to_water_map,
