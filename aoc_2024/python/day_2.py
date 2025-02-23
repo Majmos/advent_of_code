@@ -15,9 +15,10 @@ def part_1(reports: list[list[int]]) -> int:
         is_safely_decreasing: bool = False
 
         for index in range(len(report) - 1):
-            difference = report[index] - report[index + 1]
             if (is_safely_increasing & is_safely_decreasing):
                 break
+
+            difference = report[index] - report[index + 1]
             if 1 <= difference <= 3:
                 is_safely_decreasing = True
             elif -3 <= difference <= -1:
