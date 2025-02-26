@@ -13,7 +13,8 @@ def part_1(input: str) -> int:
     instructions: list[tuple[str, str]] = re.findall(
         instruction_pattern, input)
 
-    sum = 0
+    sum: int = 0
+
     for instruction in instructions:
         num1, num2 = map(int, instruction)
         sum += num1 * num2
@@ -26,8 +27,8 @@ def part_2(input: str) -> int:
     instructions: list[tuple[str, str, str]] = re.findall(
         instructions_pattern, input)
 
-    sum = 0
-    enabled = True
+    sum: int = 0
+    enabled: bool = True
 
     for instruction in instructions:
         if instruction[0].startswith('do()'):
@@ -35,7 +36,7 @@ def part_2(input: str) -> int:
         elif instruction[0].startswith('don\'t()'):
             enabled = False
         elif enabled and instruction[0].startswith('mul'):
-            num1, num2 = map(int, instruction[1:3])
+            num1, num2: int = map(int, instruction[1:3])
             sum += num1 * num2
 
     return sum
