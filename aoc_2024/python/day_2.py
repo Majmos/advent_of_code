@@ -73,7 +73,7 @@ def parse_input(reports: list[str]) -> list[list[int]]:
 def main():
     start_time: float = time.time()
 
-    input: list[str] = input_reader.read_input_for_day(2)
+    input: list[str] = input_reader.read_input_lines_for_day(2)
     parsed_input: list[list[str]] = parse_input(input)
 
     result_part_1: int = part_1(parsed_input)
