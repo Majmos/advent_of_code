@@ -36,7 +36,7 @@ def part_2(input: str) -> int:
         elif instruction[0].startswith('don\'t()'):
             enabled = False
         elif enabled and instruction[0].startswith('mul'):
-            num1, num2: int = map(int, instruction[1:3])
+            num1, num2 = map(int, instruction[1:3])
             sum += num1 * num2
 
     return sum
