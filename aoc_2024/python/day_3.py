@@ -1,11 +1,11 @@
 import re
 import sys
 import os
-import time
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), 'utils')))
 if True:
     from utils import input_reader
+    from utils import timer
 
 
 def part_1(input: str) -> int:
@@ -42,9 +42,8 @@ def part_2(input: str) -> int:
     return sum
 
 
+@timer.measure_time
 def main():
-    start_time: float = time.time()
-
     input: str = input_reader.read_input_for_day(3)
 
     result_part_1: int = part_1(input)
@@ -52,9 +51,6 @@ def main():
 
     result_part_2: int = part_2(input)
     print(f'result part_2: {result_part_2}')
-
-    end_time: float = time.time()
-    print(f"main execution time: {end_time - start_time:.4f} seconds")
 
 
 if __name__ == '__main__':
