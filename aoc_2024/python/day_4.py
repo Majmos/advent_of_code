@@ -90,7 +90,7 @@ def part_2(input: list[str]) -> int:
 
 @timer.measure_time
 def main():
-    input: list[str] = input_reader.read_input_for_day(4).split()
+    input: list[str] = input_reader.read_strip_input_lines_for_day(4)
 
     result_part_1: int = part_1(input)
     print(f'result part_1: {result_part_1}')
@@ -101,4 +101,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print(in_bounds.cache_info())
