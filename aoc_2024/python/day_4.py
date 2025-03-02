@@ -27,18 +27,18 @@ def in_bounds(row_index: int, column_index: int, rows_num: int, columns_num: int
 
 
 def search_word(grid: list[list[str]], word: str) -> int:
-    def search_from(x, y, dx, dy):
+    def search_from(row: int, column: int, direction: tuple[int, int]) -> bool:
         for i in range(len(word)):
-            nx, ny = x + i * dx, y + i * dy
+            nx, ny = row + i * direction[0], column + i * direction[1]
             if not in_bounds(nx, ny, len(grid), len(grid[0])) or grid[nx][ny] != word[i]:
                 return False
         return True
 
     count: int = 0
-    for x in range(len(grid)):
-        for y in range(len(grid[0])):
-            for dx, dy in DIRECTIONS:
-                if search_from(x, y, dx, dy):
+    for row in range(len(grid)):
+        for column in range(len(grid[0])):
+            for direction in DIRECTIONS:
+                if search_from(row, column, direction):
                     count += 1
     return count
 
@@ -49,33 +49,27 @@ def part_1(input: list[str]) -> int:
 
 
 def search_x_mas(grid: list[list[str]]) -> int:
-    def check_x_mas_pattern(x, y):
-        patterns = [
-            (grid[x-1][y-1], grid[x+1][y+1], grid[x-1][y+1], grid[x+1][y-1]),
-            (grid[x+1][y-1], grid[x-1][y+1], grid[x+1][y+1], grid[x-1][y-1]),
-            (grid[x-1][y-1], grid[x+1][y+1], grid[x+1][y-1], grid[x-1][y+1]),
-            (grid[x+1][y+1], grid[x-1][y-1], grid[x-1][y+1], grid[x+1][y-1])
-        ]
-        for pattern in patterns:
-            if pattern == ('M', 'S', 'M', 'S'):
-                return True
-        return False
+    def check_x_mas_pattern(row_index: int, column_index: int) -> bool:
+        pattern: tuple[str, str, str, str] = (grid[row_index-1][column_index-1], grid[row_index+1][column_index-1],
+                                              grid[row_index-1][column_index+1], grid[row_index+1][column_index+1])
 
-    def search_x_mas_from(x, y):
-        if (grid[x][y] != 'A'):
-            return False
-
-        if not all(in_bounds(nx, ny, len(grid), len(grid[0])) for nx, ny in [(x-1, y-1), (x+1, y+1), (x+1, y-1), (x-1, y+1)]):
-            return False
-
-        if (check_x_mas_pattern(x, y)):
+        if pattern in [('M', 'S', 'M', 'S'), ('S', 'M', 'S', 'M'), ('M', 'M', 'S', 'S'), ('S', 'S', 'M', 'M')]:
             return True
         return False
 
+    def search_x_mas_from(row_index: int, column_index: int) -> bool:
+        if (grid[row_index][column_index] != 'A'):
+            return False
+
+        if not in_bounds(row_index, column_index, len(grid) - 1, len(grid[0]) - 1):
+            return False
+
+        return check_x_mas_pattern(row_index, column_index)
+
     count: int = 0
-    for x in range(1, len(grid) - 1):
-        for y in range(1, len(grid[0]) - 1):
-            if search_x_mas_from(x, y):
+    for row_index in range(1, len(grid) - 1):
+        for column_index in range(1, len(grid[0]) - 1):
+            if search_x_mas_from(row_index, column_index):
                 count += 1
     return count
 
