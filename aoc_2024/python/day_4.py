@@ -8,6 +8,7 @@ if True:
     from utils import timer
 
 
+SEARCHED_WORD: str = "XMAS"
 DIRECTIONS: tuple[int, int] = [
     (0, 1),  # right
     (1, 0),  # down
@@ -18,8 +19,6 @@ DIRECTIONS: tuple[int, int] = [
     (-1, 1),  # up-right
     (-1, -1)  # up-left
 ]
-
-SEARCHED_WORD: str = "XMAS"
 
 
 @lru_cache
@@ -66,11 +65,9 @@ def search_x_mas(grid: list[list[str]]) -> int:
         if (grid[x][y] != 'A'):
             return False
 
-        # Check if in bounds
         if not all(in_bounds(nx, ny, len(grid), len(grid[0])) for nx, ny in [(x-1, y-1), (x+1, y+1), (x+1, y-1), (x-1, y+1)]):
             return False
 
-        # Check the X-MAS pattern
         if (check_x_mas_pattern(x, y)):
             return True
         return False
